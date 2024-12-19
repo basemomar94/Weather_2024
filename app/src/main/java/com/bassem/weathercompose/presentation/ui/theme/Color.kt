@@ -1,4 +1,4 @@
-package com.bassem.weathercompose.ui.theme
+package com.bassem.weathercompose.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

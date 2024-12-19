@@ -39,6 +39,9 @@ android {
     buildFeatures {
         compose = true
     }
+    hilt {
+        enableAggregatingTask = false
+    }
 }
 
 dependencies {
@@ -53,6 +56,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(":core"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -60,8 +64,14 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.retrofit2)
+    implementation(libs.okhttp3.logging.interceptor)
+
+    implementation (libs.androidx.material.icons.extended)
+
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+
 }

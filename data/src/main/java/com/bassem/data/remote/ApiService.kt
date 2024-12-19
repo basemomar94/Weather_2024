@@ -7,11 +7,12 @@ import retrofit2.http.Query
 interface ApiService {
 
 
-    @GET("v2/top-headlines")
+    @GET("weather")
     suspend fun getCurrentWeather(
-        @Query("sources") sources: String? = null,
-        @Query("apiKey")
-        apiKey: String = "api_key",
+        @Query("lat") lat: String? = null,
+        @Query("lon") lon: String? = null,
+        @Query("appid")
+        appid: String = "3bbbdb353c3e4d71a17dd1f6fda5a964",
     ): Flow<WeatherResponse>
 
 }
