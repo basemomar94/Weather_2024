@@ -1,6 +1,5 @@
 package com.bassem.data.remote
 import com.bassem.domain.entity.WeatherResponse
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Query
 
