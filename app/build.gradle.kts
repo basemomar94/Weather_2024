@@ -69,6 +69,8 @@ dependencies {
     implementation(libs.okhttp3.logging.interceptor)
 
     implementation (libs.androidx.material.icons.extended)
+    implementation(libs.glide)
+
 
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)

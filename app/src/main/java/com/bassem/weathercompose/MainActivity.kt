@@ -22,7 +22,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WeatherComposeTheme {
-                WeatherScreen()
+                Scaffold { padding ->
+                    WeatherScreen(modifier = Modifier.padding(padding))
+                }
             }
         }
     }

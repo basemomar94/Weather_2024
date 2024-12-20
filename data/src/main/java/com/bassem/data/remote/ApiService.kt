@@ -13,6 +13,6 @@ interface ApiService {
         @Query("lon") lon: String? = null,
         @Query("appid")
         appid: String = "3bbbdb353c3e4d71a17dd1f6fda5a964",
-    ): Flow<WeatherResponse>
+    ): WeatherResponse
 
 }

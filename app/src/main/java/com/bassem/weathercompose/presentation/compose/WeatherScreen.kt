@@ -12,26 +12,31 @@ import com.bassem.weathercompose.viewmodels.WeatherViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.bassem.domain.entity.Current
+import androidx.compose.ui.platform.LocalContext
+import com.bassem.domain.entity.WeatherResponse
+import com.bassem.weathercompose.utils.getErrorMessage
 
 @Composable
-fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel()) {
-    val result = viewModel.weatherResponse?.collectAsState(ApiResult.Loading)?.value
-
+fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel(), modifier: Modifier) {
+    val context = LocalContext.current
+    val result by viewModel.weatherResponse.collectAsState(initial = ApiResult.Loading)
 
     LaunchedEffect(Unit) {
         viewModel.fetchWeather("22.1", "12.2")
     }
 
     when (result) {
-        is ApiResult.Fail -> {}
-        ApiResult.Loading -> {}
-        is ApiResult.Success -> {
-            CurrentWeatherDisplay((result.data) as Current)
+        is ApiResult.Fail -> {
+            ErrorTextCompose(context.getErrorMessage((result as ApiResult.Fail).errorTypes))
         }
 
-        null -> {}
+        ApiResult.Loading -> {
+            LoadingIndicator()
+        }
+
+        is ApiResult.Success -> {
+            val currentWeather = (result as ApiResult.Success<WeatherResponse>).data
+            CurrentWeatherDisplay(currentWeather,modifier)
+        }
     }
-
-
 }

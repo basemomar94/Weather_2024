@@ -1,9 +1,17 @@
 package com.bassem.domain.entity
 
-import com.bassem.domain.entity.Current
-import com.bassem.domain.entity.Location
-
 data class WeatherResponse(
-    val current: Current,
-    val location: Location
+    val base: String,
+    val clouds: Clouds,
+    val cod: Int,
+    val coord: Coord,
+    val dt: Int,
+    val id: Int,
+    val main: Main,
+    val name: String,
+    val sys: Sys,
+    val timezone: Int,
+    val visibility: Int,
+    val weather: List<Weather>,
+    val wind: Wind
 )
