@@ -4,4 +4,11 @@
     <string name="local_parsing_error">Local Parsing Error</string>
     <string name="remote_parsing_error">Remote Parsing Error</string>
     <string name="unexpected_error">Unexpected Error</string>
+    <string name="pressrue">Pressure</string>
+    <string name="wind">Wind</string>
+    <string name="sunset">Sunset</string>
+    <string name="sunrise" >Sunrise</string>
+    <string name="visibility">Visibility</string>
+    <string name="feels_like">Feels Like</string>
+    <string name="humidity">Humidity</string>
 </resources>

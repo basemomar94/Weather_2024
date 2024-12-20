@@ -37,13 +37,13 @@ fun TemperatureWithCityDisplay(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(32.dp),
+                .padding(dimensionResource(R.dimen.default_padding)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             GlideImage(
                 model = weatherIconUrl,
                 contentDescription = weatherDescription,
-                modifier = Modifier.size(64.dp)
+                modifier = Modifier.size(dimensionResource(R.dimen.icon_size_xlarge))
             )
             Text(
                 text = "$temperatureC°C",
