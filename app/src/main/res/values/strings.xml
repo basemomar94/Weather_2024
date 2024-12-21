@@ -20,5 +20,7 @@
     <string name="save_image">Save Image</string>
     <string name="no_image">No image captured</string>
     <string name="captured_image">Captured Image</string>
+    <string name="cant_fetch_location">Unable to retrieve location.</string>
+    <string name="location_permission_required">Location permission denied. Please grant permission to proceed.</string>
 
 </resources>

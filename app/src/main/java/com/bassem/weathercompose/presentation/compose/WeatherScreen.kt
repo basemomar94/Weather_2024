@@ -1,10 +1,8 @@
 package com.bassem.weathercompose.presentation.compose
 
 import android.Manifest
-import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.contract.ActivityResultContracts.*
+import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -14,10 +12,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bassem.core.entity.ApiResult
 import com.bassem.domain.entity.WeatherResponse
+import com.bassem.weathercompose.R
 import com.bassem.weathercompose.utils.getErrorMessage
 import com.bassem.weathercompose.utils.getLastKnownLocation
 import com.bassem.weathercompose.viewmodels.WeatherViewModel
@@ -30,18 +28,29 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel(), modifier: Modif
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     var lat by remember { mutableStateOf<String?>(null) }
     var lon by remember { mutableStateOf<String?>(null) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
 
     val launcher = rememberLauncherForActivityResult(
         contract = RequestPermission()
     ) { isGranted: Boolean ->
         if (isGranted) {
-           context.getLastKnownLocation(fusedLocationClient, onLocationRetrieved = { latitude, longitude ->
-                lat = latitude
-                lon = longitude
-            })
+            context.getLastKnownLocation(
+                fusedLocationClient,
+                onLocationRetrieved = { latitude, longitude ->
+                    if (latitude != null && longitude != null) {
+                        lat = latitude
+                        lon = longitude
+                        errorMessage = null
+                    } else {
+                        errorMessage = context.getString(R.string.cant_fetch_location)
+                    }
+                })
+            errorMessage = null
         } else {
             lat = null
             lon = null
+            errorMessage = context.getString(R.string.location_permission_required)
         }
     }
 
@@ -55,20 +64,26 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel(), modifier: Modif
         }
     }
 
-    when (result) {
-        is ApiResult.Fail -> {
-            ErrorTextCompose(context.getErrorMessage((result as ApiResult.Fail).errorTypes))
-        }
+    if (errorMessage != null) {
+        ErrorTextCompose(errorMessage)
+    } else {
+        when (result) {
+            is ApiResult.Fail -> {
+                ErrorTextCompose(context.getErrorMessage((result as ApiResult.Fail).errorTypes))
+            }
 
-        ApiResult.Loading -> {
-            LoadingIndicator()
-        }
+            ApiResult.Loading -> {
+                LoadingIndicator()
+            }
 
-        is ApiResult.Success -> {
-            val currentWeather = (result as ApiResult.Success<WeatherResponse>).data
-            CurrentWeatherDisplay(currentWeather, modifier)
+            is ApiResult.Success -> {
+                val currentWeather = (result as ApiResult.Success<WeatherResponse>).data
+                CurrentWeatherDisplay(currentWeather, modifier)
+            }
         }
     }
+
+
 }
 
 
