@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.bassem.weathercompose.R
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -23,10 +22,10 @@ import java.util.Locale
 @Composable
 fun TemperatureWithCityDisplay(
     cityName: String,
-    temperatureC: Int,
+    temperature: String,
     weatherDescription: String,
     weatherIconUrl: String,
-    feelsLikeC: Int
+    feelsLike: String
 ) {
     Card(
         modifier = Modifier
@@ -46,7 +45,7 @@ fun TemperatureWithCityDisplay(
                 modifier = Modifier.size(dimensionResource(R.dimen.icon_size_xlarge))
             )
             Text(
-                text = "$temperatureC°C",
+                text = temperature,
                 style = MaterialTheme.typography.displayMedium.copy(
                     fontWeight = FontWeight.Bold
                 ),
@@ -60,7 +59,7 @@ fun TemperatureWithCityDisplay(
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
             Text(
-                text = "Feels like: $feelsLikeC°C",
+                text = "Feels like: $feelsLike",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.secondary
             )

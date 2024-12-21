@@ -31,6 +31,14 @@ fun WeatherResponse.getIconUrl() = weather.firstOrNull()?.let {
 
 fun WeatherResponse.getDescription() = weather.firstOrNull()?.description ?: "No Data"
 
-fun WeatherResponse.getCelsius() = (main.temp - 273.15).toInt()
+fun WeatherResponse.getCelsius() = (main.temp - 273.15)
 
-fun WeatherResponse.getVisibility() = (main.pressure / 1000 ).toString()
+fun WeatherResponse.getVisibility() = (main.pressure / 1000).toString()
+
+fun Double.convertTemperature(isCelsius: Boolean): String {
+    return if (isCelsius) {
+        "%.1f°C".format(this)
+    } else {
+        "%.1f°F".format(this * 9 / 5 + 32)
+    }
+}

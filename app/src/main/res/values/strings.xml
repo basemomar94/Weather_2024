@@ -14,4 +14,6 @@
     <string name="km">" km"</string>
     <string name="mb">mb</string>
     <string name="kph">kph</string>
+    <string name="celsius">Celsius</string>
+    <string name="fahrenheit">Fahrenheit</string>
 </resources>
