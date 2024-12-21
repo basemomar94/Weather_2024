@@ -11,4 +11,7 @@
     <string name="visibility">Visibility</string>
     <string name="feels_like">Feels Like</string>
     <string name="humidity">Humidity</string>
+    <string name="km">" km"</string>
+    <string name="mb">mb</string>
+    <string name="kph">kph</string>
 </resources>

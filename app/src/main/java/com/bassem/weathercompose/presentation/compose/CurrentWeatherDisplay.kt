@@ -1,54 +1,40 @@
 package com.bassem.weathercompose.presentation.compose
 
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Air
 import androidx.compose.material.icons.filled.Brightness5
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.WaterDrop
-import androidx.compose.material.icons.filled.WbCloudy
 import androidx.compose.material.icons.filled.WbSunny
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.bassem.domain.entity.WeatherResponse
 import com.bassem.weathercompose.R
 import com.bassem.weathercompose.utils.formatTime
-import java.util.Locale
+import com.bassem.weathercompose.utils.getCelsius
+import com.bassem.weathercompose.utils.getDescription
+import com.bassem.weathercompose.utils.getIconUrl
+import com.bassem.weathercompose.utils.getVisibility
 
 @Composable
 fun CurrentWeatherDisplay(weatherData: WeatherResponse, modifier: Modifier = Modifier) {
-    val temperatureC = (weatherData.main.temp - 273.15).toInt()
-    val feelsLikeC = (weatherData.main.feels_like - 273.15).toInt()
-    val weatherDescription = weatherData.weather.firstOrNull()?.description ?: "No data"
-    val weatherIconUrl = weatherData.weather.firstOrNull()?.let {
-        "https://openweathermap.org/img/wn/${it.icon}.png"
-    } ?: ""
-    val scroll = rememberScrollState()
+    val temperatureC = weatherData.getCelsius()
+    val feelsLikeC = weatherData.getCelsius()
+    val weatherDescription = weatherData.getDescription()
+    val weatherIconUrl = weatherData.getIconUrl()
 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(dimensionResource(R.dimen.default_padding))
-            .scrollable(state = scroll, orientation = Orientation.Vertical),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(dimensionResource(R.dimen.default_padding)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.default_padding))
     ) {
         TemperatureWithCityDisplay(
             cityName = weatherData.name,
@@ -70,7 +56,7 @@ fun CurrentWeatherDisplay(weatherData: WeatherResponse, modifier: Modifier = Mod
             WeatherInfoItem(
                 icon = Icons.Default.Brightness5,
                 label = stringResource(R.string.pressrue),
-                value = "${weatherData.main.pressure} mb"
+                value = "${weatherData.main.pressure}" + stringResource(R.string.mb)
             )
         }
 
@@ -81,13 +67,13 @@ fun CurrentWeatherDisplay(weatherData: WeatherResponse, modifier: Modifier = Mod
             WeatherInfoItem(
                 icon = Icons.Default.Air,
                 label = stringResource(R.string.wind),
-                value = "${weatherData.wind.speed} kph"
+                value = "${weatherData.wind.speed}" + stringResource(R.string.kph)
             )
 
             WeatherInfoItem(
                 icon = Icons.Default.Visibility,
                 label = stringResource(R.string.visibility),
-                value = "${weatherData.visibility / 1000} km"
+                value = weatherData.getVisibility() + stringResource(R.string.km)
             )
         }
         Row(
