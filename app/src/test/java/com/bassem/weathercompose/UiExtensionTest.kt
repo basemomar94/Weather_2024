@@ -1,10 +1,14 @@
-package com.bassem.weathercompose.utils
+package com.bassem.weathercompose
 
 import android.content.Context
 import com.bassem.core.entity.ErrorTypes
 import com.bassem.domain.entity.Weather
 import com.bassem.domain.entity.WeatherResponse
-import com.bassem.weathercompose.R
+import com.bassem.weathercompose.utils.convertTemperature
+import com.bassem.weathercompose.utils.formatTime
+import com.bassem.weathercompose.utils.getDescription
+import com.bassem.weathercompose.utils.getErrorMessage
+import com.bassem.weathercompose.utils.getIconUrl
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals

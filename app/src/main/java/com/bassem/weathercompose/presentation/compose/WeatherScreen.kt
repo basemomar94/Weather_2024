@@ -13,18 +13,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bassem.core.entity.ApiResult
-import com.bassem.domain.entity.WeatherResponse
 import com.bassem.weathercompose.R
 import com.bassem.weathercompose.utils.getErrorMessage
 import com.bassem.weathercompose.utils.getLastKnownLocation
+import com.bassem.weathercompose.viewmodels.WeatherScreenState
 import com.bassem.weathercompose.viewmodels.WeatherViewModel
 import com.google.android.gms.location.LocationServices
 
 @Composable
 fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel(), modifier: Modifier) {
     val context = LocalContext.current
-    val result by viewModel.weatherResponse.collectAsState(initial = ApiResult.Loading)
+    val state by viewModel.weatherState.collectAsState(initial = WeatherScreenState.Loading)
     val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
     var lat by remember { mutableStateOf<String?>(null) }
     var lon by remember { mutableStateOf<String?>(null) }
@@ -46,7 +45,6 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel(), modifier: Modif
                         errorMessage = context.getString(R.string.cant_fetch_location)
                     }
                 })
-            errorMessage = null
         } else {
             lat = null
             lon = null
@@ -67,17 +65,17 @@ fun WeatherScreen(viewModel: WeatherViewModel = hiltViewModel(), modifier: Modif
     if (errorMessage != null) {
         ErrorTextCompose(errorMessage)
     } else {
-        when (result) {
-            is ApiResult.Fail -> {
-                ErrorTextCompose(context.getErrorMessage((result as ApiResult.Fail).errorTypes))
+        when (state) {
+            is WeatherScreenState.Error -> {
+                ErrorTextCompose(context.getErrorMessage((state as WeatherScreenState.Error).types))
             }
 
-            ApiResult.Loading -> {
+            WeatherScreenState.Loading -> {
                 LoadingIndicator()
             }
 
-            is ApiResult.Success -> {
-                val currentWeather = (result as ApiResult.Success<WeatherResponse>).data
+            is WeatherScreenState.Data -> {
+                val currentWeather = (state as WeatherScreenState.Data).apps
                 CurrentWeatherDisplay(currentWeather, modifier)
             }
         }
